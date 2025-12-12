@@ -110,6 +110,34 @@ class Bitbucket extends TestCase {
 		$this->assertErrorResponse( 404, $response );
 	}
 
+	public function test_request_incomplete(): void {
+		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request->add_header( 'Content-Type', 'application/json' );
+		$request->set_body(
+			(string) wp_json_encode(
+				[
+					'ref'        => 'refs/heads/master',
+					'repository' => [
+						'links'      => [
+							'html' => [
+								'href' => '',
+							],
+						],
+						'full_name'  => 'wearerequired/traduttore',
+						'scm'        => 'git',
+						'is_private' => false,
+					],
+				]
+			)
+		);
+		$signature = 'sha256=' . hash_hmac( 'sha256', $request->get_body(), 'traduttore-test' );
+		$request->add_header( 'x-event-key', 'repo:push' );
+		$request->add_header( 'x-hub-signature-256', $signature );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertErrorResponse( 400, $response );
+	}
+
 	public function test_valid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->add_header( 'Content-Type', 'application/json' );

@@ -106,6 +106,28 @@ class GitLab extends TestCase {
 		$this->assertErrorResponse( 404, $response );
 	}
 
+	public function test_request_incomplete(): void {
+		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
+		$request->set_body_params(
+			[
+				'ref'     => '',
+				'project' => [
+					'default_branch'      => 'master',
+					'path_with_namespace' => 'wearerequired/traduttore',
+					'homepage'            => 'https://gitlab.com/wearerequired/traduttore',
+					'http_url'            => 'https://gitlab.com/wearerequired/traduttore.git',
+					'ssh_url'             => 'git@gitlab.com/wearerequired/traduttore.git',
+					'visibility_level'    => 20,
+				],
+			]
+		);
+		$request->add_header( 'x-gitlab-event', 'Push Hook' );
+		$request->add_header( 'x-gitlab-token', 'traduttore-test' );
+		$response = rest_get_server()->dispatch( $request );
+
+		$this->assertErrorResponse( 400, $response );
+	}
+
 	public function test_valid_project(): void {
 		$request = new WP_REST_Request( 'POST', '/traduttore/v1/incoming-webhook' );
 		$request->set_body_params(
