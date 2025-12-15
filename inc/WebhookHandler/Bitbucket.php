@@ -82,10 +82,6 @@ class Bitbucket extends Base {
 		$params = $this->request->get_params();
 		$href   = (string) $params['repository']['links']['html']['href'];
 
-		if ( '' === $href ) {
-			return new \WP_Error( '400', 'Request incomplete', [ 'status' => 400 ] );
-		}
-
 		$project = $this->resolve_project( $href );
 
 		if ( ! $project instanceof Project ) {
