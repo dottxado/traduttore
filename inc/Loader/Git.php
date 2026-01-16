@@ -51,9 +51,9 @@ class Git extends Base {
 		 * @since 4.0.0
 		 *
 		 * @param string $branch Name of the Git branch to clone. Empty string clones the default branch.
-		 * @param string|null $repository Name of the repository. Can be used to resolve the project.
+		 * @param \Required\Traduttore\Repository $repository Full repository instance.
 		 */
-		$branch = apply_filters( 'traduttore.git_clone_branch', '', $this->repository->get_name() );
+		$branch = apply_filters( 'traduttore.git_clone_branch', '', $this->repository );
 		if ( '' !== $branch ) {
 			$cmd .= ' --branch ' . escapeshellarg( $branch );
 		}
@@ -82,7 +82,7 @@ class Git extends Base {
 		 * @param bool                            $use_https  Whether to use HTTPS instead of SSH for
 		 *                                                    cloning repositories.
 		 *                                                    Defaults to true for public repositories.
-		 * @param \Required\Traduttore\Repository $repository The current repository.
+		 * @param Repository $repository The current repository.
 		 */
 		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->repository->is_public(), $this->repository );
 
@@ -98,7 +98,7 @@ class Git extends Base {
 		 * @since 3.0.0
 		 *
 		 * @param string                          $clone_url  The URL to clone a Git repository.
-		 * @param \Required\Traduttore\Repository $repository The current repository.
+		 * @param Repository $repository The current repository.
 		 */
 		return apply_filters( 'traduttore.git_clone_url', (string) $clone_url, $this->repository );
 	}
