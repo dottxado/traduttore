@@ -79,10 +79,10 @@ class Git extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param bool                                   $use_https  Whether to use HTTPS instead of SSH for
-		 *                                                           cloning repositories.
-		 *                                                           Defaults to true for public repositories.
-		 * @param \Required\Traduttore\Loader\Repository $repository The current repository.
+		 * @param bool                            $use_https  Whether to use HTTPS instead of SSH for
+		 *                                                    cloning repositories.
+		 *                                                    Defaults to true for public repositories.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		$use_https = apply_filters( 'traduttore.git_clone_use_https', $this->repository->is_public(), $this->repository );
 
@@ -97,8 +97,8 @@ class Git extends Base {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string                                 $clone_url  The URL to clone a Git repository.
-		 * @param \Required\Traduttore\Loader\Repository $repository The current repository.
+		 * @param string                          $clone_url  The URL to clone a Git repository.
+		 * @param \Required\Traduttore\Repository $repository The current repository.
 		 */
 		return apply_filters( 'traduttore.git_clone_url', (string) $clone_url, $this->repository );
 	}
